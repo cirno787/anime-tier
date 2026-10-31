@@ -15,3 +15,11 @@ run('$("#undo").onclick()');assert(!run('pair.some(id=>state.skippedIds.includes
 run('applyBoardStyle("compare",true,[9717,2582]);$("#refresh").onclick()');assert.equal(run('comparisonPool().length'),0);assert(run('$("#refresh").disabled'));
 run('applyBoardStyle("compare",true,[9717]);state.skippedIds=state.skippedIds.filter(id=>id!==9717);renderBoard()');assert(!run('$("#refresh").disabled'));run('$("#refresh").onclick()');assert.equal(run('comparisonPool().length'),0);
 console.log('PASS: exhaustive desktop/phone skips without repeats, completion notice, reload persistence, undo, rating exclusion, filters, comparison skips/undo and last single work.');
+
+const search=boot();search('state.skippedIds=[9717];refill(true)');assert(!search('queue.includes(9717)'));
+search('$("#search").value=byId.get(9717).title;refill(true)');assert(search('available().some(work=>work.id===9717)'));assert(search('queue.includes(9717)'));
+search('$("#search").value="";refill(true)');assert(!search('queue.includes(9717)'));
+search('$("#search").value=byId.get(9717).title;refill(true);place(9717,"S")');assert(!search('state.skippedIds.includes(9717)'));assert(search('ranked().has(9717)'));
+search('state.skippedIds=[2582];applyBoardStyle("compare");$("#search").value=byId.get(2582).title;refill(true)');assert(search('comparisonPool().includes(2582)'));
+search('$("#search").value="";refill(true)');assert(!search('comparisonPool().includes(2582)'));
+console.log('PASS: explicit search finds skipped works for rating/comparison; clearing search excludes them again; rating removes the skip record.');

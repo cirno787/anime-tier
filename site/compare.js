@@ -11,8 +11,8 @@ function recordBoardExport(mode,ids){state.exportedBoards=state.exportedBoards||
 const matchAllWorks=matches;
 matches=function(work){return matchAllWorks(work)&&(!state.onlyWatched||state.watchedIds.includes(work.id))};
 const availableUnrankedWorks=available;
-available=function(){return state.onlyWatched?CATALOG.filter(work=>matches(work)&&!state.skippedIds.includes(work.id)):availableUnrankedWorks()};
-function comparisonPool(){const passed=new Set(state.skippedIds);return CATALOG.filter(work=>work.media==='anime'&&!passed.has(work.id)&&matches(work)).map(work=>work.id)}
+available=function(){return state.onlyWatched?CATALOG.filter(work=>matches(work)&&($('#search').value.trim()||!state.skippedIds.includes(work.id))):availableUnrankedWorks()};
+function comparisonPool(){const passed=new Set(state.skippedIds),searching=!!$('#search').value.trim();return CATALOG.filter(work=>work.media==='anime'&&(searching||!passed.has(work.id))&&matches(work)).map(work=>work.id)}
 function drawOpponent(pool,exclude){let choices=pool.filter(id=>!exclude.includes(id)&&!comparison().seen.includes(id));if(!choices.length)choices=pool.filter(id=>!exclude.includes(id));return choices.length?choices[Math.floor(Math.random()*choices.length)]:null}
 function ensureComparison(){
  let data=comparison();const scope=JSON.stringify([state.media,state.genres,state.onlyWatched?state.watchedIds:null,$('#search').value.trim()]);
