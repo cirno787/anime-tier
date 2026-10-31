@@ -1,0 +1,56 @@
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+main{min-width:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.workspace-toolbar .actions{max-width:none;flex-wrap:wrap}
+dialog{max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain}
+.score-row{touch-action:pan-y}
+@media(max-width:1100px){
+ main{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+ .workspace-toolbar{padding:20px 0 16px}
+ .workspace-toolbar .actions{width:100%;margin:0;gap:8px;justify-content:flex-end}
+ .workspace-toolbar .actions button{min-height:44px;padding:10px 13px;font-size:12px}
+ .search-line{gap:12px;flex-wrap:wrap}.search{flex:1;min-width:180px}.search input{width:100%;min-width:0}
+ .custom-button{margin:0;min-height:44px;font-size:12px}
+ .pool-actions button,.filters select,#genres button{min-height:44px}
+ .score-row{min-height:50px}.score-title{font-size:13px}
+ .dialog-actions button,#pickTiers button,#newTier{min-height:44px}
+ .close{min-width:44px;min-height:44px}
+ .filters .work-filters select{font-size:16px}
+ footer{overflow-wrap:anywhere}
+}
+@media(max-width:600px){
+ main{padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
+ .workspace-toolbar{display:block;padding:12px 0}
+ .workspace-toolbar .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;margin:0}
+ .workspace-toolbar .actions button{min-width:0;width:100%;font-size:11px;padding:10px 5px;white-space:nowrap;min-height:44px}
+ .tier{min-height:82px}.tier-label{flex-basis:46px}.tier-name{max-width:44px;font-size:9px}.tier-items{padding:5px;--base-gap:2px}
+ .discovery{margin-top:16px;padding:13px 10px}
+ .candidates{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;row-gap:10px;min-height:0}
+ .candidates .poster{max-height:none;aspect-ratio:.71}
+ .discovery > .candidates{margin-bottom:14px}
+ .discovery .discovery-heading{gap:0;min-width:0}.discovery-heading .pool-actions{gap:6px;min-width:0}
+ .discovery-heading #refresh{min-width:0;min-height:46px;font-size:13px;padding:12px 7px}
+ .discovery-heading #refreshSound{min-width:42px;min-height:46px;padding:8px}
+ .discovery-heading #filterToggle{min-height:46px;font-size:11px;padding:8px;white-space:nowrap}
+ .search-line{margin:15px 0 10px;gap:8px}.search{min-width:130px}.search input{font-size:16px}.custom-button{font-size:11px;padding:8px}
+ .filters .work-filters{display:block}.filters .work-filters label{justify-content:space-between;font-size:13px}.filters .work-filters select{width:auto;min-width:145px;font-size:16px}
+ #genres{gap:6px}#genres button{padding:8px 12px;font-size:12px;min-height:44px}
+ .filter-top{gap:8px}.filter-top button{min-height:40px}
+ .progress-stats{gap:16px;font-size:10px}.progress-stats strong{font-size:16px;margin-left:4px}
+ .tier-scope-note{font-size:10px}.pool-foot{font-size:10px}
+ .score-row{padding:5px 9px;gap:8px;min-height:50px}.score-rank{width:28px;font-size:12px}.score-cover{width:27px;height:38px}.score-title{font-size:12px}.score-value{font-size:19px}
+ dialog{padding:25px 18px}#scoreDialog{width:390px}#scoreDialog h3{overflow-wrap:anywhere;padding-right:26px;line-height:1.5}
+ .dialog-actions{gap:8px}.dialog-actions button{flex:1;min-height:46px;font-size:14px}
+ #pickTiers{grid-template-columns:repeat(auto-fit,minmax(48px,1fr))}#pickTiers button{min-height:48px}
+ #tierSettingsDialog{padding:24px 14px}#tierSettingsRows{gap:0}.tier-setting-row{display:grid;grid-template-columns:38px 54px minmax(0,1fr);gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
+ .tier-setting-row input[type=color]{width:38px;height:44px}.tier-setting-row .tier-code-input,.tier-setting-row .tier-name-input{width:100%;font-size:16px;height:44px;padding:8px 5px}
+ .tier-row-controls{grid-column:1/-1;justify-content:flex-end;gap:8px}.tier-row-controls button{min-width:44px;min-height:44px}
+ #customDialog{padding:24px 16px}.custom-field input,.custom-field select{font-size:16px;min-height:44px}.custom-upload{padding:10px;gap:10px}.custom-upload img{width:58px;height:82px}.custom-file-label{overflow-wrap:anywhere}
+ #customGenres span{min-height:40px;display:flex;align-items:center;font-size:12px}
+ .troll-notice{left:max(10px,env(safe-area-inset-left,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 20px);gap:10px}.troll-notice button{min-height:40px;padding:8px 12px}
+}
+@media(hover:none) and (pointer:coarse){
+ .poster:hover{transform:none;box-shadow:none}.candidates .poster::after,.candidates .poster::before{display:none}
+}
+
+/* Hidden tooltips must not widen the page on touch screens. */
+.candidates .poster::after{display:none}.candidates .poster:hover::after,.candidates .poster:focus-visible::after{display:block}.candidates .poster:nth-child(10n+1)::after{left:0;transform:none}.candidates .poster:nth-child(10n)::after{left:auto;right:0;transform:none}@media(max-width:600px){.candidates .poster::after,.candidates .poster:hover::after,.candidates .poster:focus-visible::after{display:none}}@media(hover:none) and (pointer:coarse){.candidates .poster::after,.candidates .poster:hover::after,.candidates .poster:focus-visible::after{display:none}}
