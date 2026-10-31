@@ -42,14 +42,23 @@ $('#board').addEventListener('dragover',event=>{if(state.boardStyle==='scores'&&
 $('#board').addEventListener('drop',event=>{if(state.boardStyle!=='scores')return;event.preventDefault();const id=Number(event.dataTransfer.getData('text/plain'));dragging=null;if(byId.has(id))openScorePicker(id)});
 const exportTierBoard=exportBoard;
 function xmlText(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]))}
-function exportScoreBoard(){
- const ids=scoreOrder(),width=1400,rowHeight=58,height=180+Math.max(ids.length,1)*rowHeight;
- let svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+width+'" height="'+height+'" viewBox="0 0 '+width+' '+height+'"><rect width="100%" height="100%" fill="#121416"/><g font-family="sans-serif"><text x="40" y="65" fill="#f0f3ec" font-size="30" font-weight="700">我的评分榜</text>';
- if(state.trollMode)svg+='<text x="40" y="105" fill="#f4bc84" font-size="18">串子模式 · 榜单已倒置</text>';
- ids.forEach((id,index)=>{const score=state.scores?.[id],y=132+index*rowHeight;svg+='<rect x="40" y="'+y+'" width="1320" height="57" fill="'+(index%2?'#202426':'#1b1e20')+'"/><text x="65" y="'+(y+36)+'" fill="#dcf98b" font-size="22">'+(index+1)+'</text><svg x="140" y="'+y+'" width="1060" height="57"><text x="0" y="36" fill="#f0f3ec" font-size="22">'+xmlText(byId.get(id).title)+'</text></svg><text x="1335" y="'+(y+36)+'" text-anchor="end" fill="'+(Number.isFinite(score)?'#dcf98b':'#899387')+'" font-size="24">'+(Number.isFinite(score)?score.toFixed(1):'未评分')+'</text>'});
- svg+='</g></svg>';const blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='我的评分榜.svg';a.click();if(typeof recordBoardExport==='function')recordBoardExport('scores',ids);setTimeout(()=>URL.revokeObjectURL(url),10000);notify('评分榜已导出');
+async function exportScoreBoard(){
+ const ids=scoreOrder(),files=[],pageSize=100,width=1200,rowHeight=64,pages=Math.max(1,Math.ceil(ids.length/pageSize));
+ for(let page=0;page<pages;page++){
+  const list=ids.slice(page*pageSize,(page+1)*pageSize),canvas=document.createElement('canvas');canvas.width=width;canvas.height=180+Math.max(1,list.length)*rowHeight;
+  const ctx=canvas.getContext('2d');ctx.fillStyle='#121416';ctx.fillRect(0,0,width,canvas.height);ctx.fillStyle='#f0f3ec';ctx.font='bold 30px sans-serif';ctx.fillText('我的评分榜',40,62);
+  ctx.fillStyle=state.trollMode?'#f4bc84':'#899387';ctx.font='16px sans-serif';ctx.fillText(state.trollMode?'串子模式 · 榜单已倒置':ids.length+' 部作品'+(pages>1?' · 第 '+(page+1)+' / '+pages+' 页':''),40,100);
+  for(let index=0;index<list.length;index++){
+   const id=list[index],work=byId.get(id),score=state.scores?.[id],y=132+index*rowHeight;
+   ctx.fillStyle=index%2?'#202426':'#1b1e20';ctx.fillRect(40,y,1120,rowHeight-1);ctx.fillStyle='#dcf98b';ctx.font='22px sans-serif';ctx.fillText(String(page*pageSize+index+1),55,y+40,65);
+   try{const cover=await loadImage(work.image);const cw=36,ch=52,scale=Math.max(cw/cover.width,ch/cover.height),sw=cw/scale,sh=ch/scale;ctx.drawImage(cover,(cover.width-sw)/2,(cover.height-sh)/2,sw,sh,130,y+6,cw,ch)}catch{}
+   ctx.fillStyle='#f0f3ec';ctx.font='22px sans-serif';ctx.fillText(work.title,185,y+40,820);ctx.textAlign='right';ctx.fillStyle=Number.isFinite(score)?'#dcf98b':'#899387';ctx.font='24px sans-serif';ctx.fillText(Number.isFinite(score)?score.toFixed(1):'未评分',1140,y+40);ctx.textAlign='left';
+  }
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('图片生成失败');files.push({blob,name:'我的评分榜'+(pages>1?'-'+(page+1):'')+'.png'});canvas.width=canvas.height=1;
+ }
+ deliverRankingImages(files);if(typeof recordBoardExport==='function')recordBoardExport('scores',ids);notify('评分榜图片已生成');
 }
-exportBoard=function(){if(state.boardStyle==='scores')exportScoreBoard();else return exportTierBoard()};$('#export').onclick=exportBoard;
+exportBoard=async function(){if(state.boardStyle!=='scores')return exportTierBoard();const button=$('#export');button.disabled=true;button.textContent='正在生成…';try{await exportScoreBoard()}catch{notify('图片生成失败，请重试')}finally{button.disabled=false;button.textContent='↓ 导出榜单'}};$('#export').onclick=exportBoard;
 renderBoard();
 
 const renderBaseCandidates=renderCandidates;renderCandidates=function(){renderBaseCandidates();const hint=document.querySelector(".pool-foot>span:last-child");if(hint)hint.textContent=state.boardStyle==='scores'?'悬停查看片名 · 点击封面评分':'悬停查看片名 · 点击封面选择档位';if(state.boardStyle==='scores'&&queue.length)$("#poolStatus").textContent='点击作品评分，按分数自动排名'};renderCandidates();
