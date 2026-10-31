@@ -1,0 +1,14 @@
+{
+  "work": "BanG Dream! Ave Mujica",
+  "episode": 4,
+  "character": "Mortis / 若叶睦",
+  "quote": "ぜーんぶ弾けなーい",
+  "translation": "全都不会弹",
+  "source": "https://www.bilibili.com/video/BV1JHFueSE8b/",
+  "excerpt_start": 17.54,
+  "excerpt_end": 19.3,
+  "duration_seconds": 1.76,
+  "processing": "High-quality original Japanese dialogue. Speech-aligned boundaries, gentle bandpass, stationary spectral noise reduction, consonant-preserving blend, short edge fades. No generated voice, pitch or speed changes.",
+  "file": "mortis-line-clean-v2.wav",
+  "source_audio_bitrate": 156847
+}
