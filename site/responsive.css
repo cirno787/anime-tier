@@ -3,6 +3,8 @@ main{min-width:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
 .workspace-toolbar .actions{max-width:none;flex-wrap:wrap}
 dialog{max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain}
 .score-row{touch-action:pan-y}
+.board .media-badge{display:none}
+.board .poster{max-height:none}
 @media(max-width:1100px){
  main{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
  .workspace-toolbar{padding:20px 0 16px}
@@ -22,7 +24,7 @@ dialog{max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto
  .workspace-toolbar{display:block;padding:12px 0}
  .workspace-toolbar .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;margin:0}
  .workspace-toolbar .actions button{min-width:0;width:100%;font-size:11px;padding:10px 5px;white-space:nowrap;min-height:44px}
- .tier{min-height:82px}.tier-label{flex-basis:46px}.tier-name{max-width:44px;font-size:9px}.tier-items{padding:5px;--base-gap:2px}
+ .tier{min-height:104px}.tier-label{flex-basis:46px}.tier-name{max-width:44px;font-size:9px}.tier-items{padding:5px;--base-gap:2px}
  .discovery{margin-top:16px;padding:13px 10px}
  .candidates{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;row-gap:10px;min-height:0}
  .candidates .poster{max-height:none;aspect-ratio:.71}
@@ -47,6 +49,25 @@ dialog{max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto
  #customDialog{padding:24px 16px}.custom-field input,.custom-field select{font-size:16px;min-height:44px}.custom-upload{padding:10px;gap:10px}.custom-upload img{width:58px;height:82px}.custom-file-label{overflow-wrap:anywhere}
  #customGenres span{min-height:40px;display:flex;align-items:center;font-size:12px}
  .troll-notice{left:max(10px,env(safe-area-inset-left,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 20px);gap:10px}.troll-notice button{min-height:40px;padding:8px 12px}
+}
+/* Phone landscape: keep the board and incoming works alongside each other. */
+@media(orientation:landscape) and (max-height:500px) and (min-width:600px) and (max-width:1100px){
+ main{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,1fr);gap:12px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+ .workspace-toolbar{grid-column:1/-1;padding:8px 0 0;display:block}
+ .workspace-toolbar .actions{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-end}
+ .workspace-toolbar .actions button{min-height:44px;padding:8px 10px;font-size:11px;white-space:nowrap}
+ .board-section,.discovery{min-width:0;align-self:start}
+ .tier{min-height:clamp(54px,calc((100dvh - 68px)/5),68px)}.tier-label{flex-basis:46px}.tier-letter{font-size:25px}.tier-name{max-width:44px;font-size:9px}.tier-items{padding:4px;--base-gap:2px}
+ .tier-items:empty:after{left:12px;font-size:10px}
+ .discovery{margin:0;padding:10px}
+ .candidates{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-height:0}.candidates .poster{max-height:none;aspect-ratio:.71}
+ .discovery>.candidates{margin-bottom:10px}
+ .discovery-heading .pool-actions{gap:5px}.discovery-heading #refresh{min-height:44px;padding:8px 5px;font-size:12px}.discovery-heading #refreshSound{min-height:44px;min-width:38px;padding:7px}.discovery-heading #filterToggle{min-height:44px;padding:7px;font-size:11px}.discovery-heading .filter-button-label{display:none}
+ .search-line{margin:10px 0;gap:6px}.search{min-width:0;flex-basis:100%}.search input{font-size:16px;width:100%}.custom-button{width:100%;min-height:44px}
+ .progress-stats{gap:12px;margin-top:10px;padding-top:10px;font-size:10px}.progress-stats strong{font-size:14px;margin-left:3px}.tier-scope-note,.pool-foot{font-size:9px}
+ footer{grid-column:1/-1;padding:8px 0 12px}
+ .board-section:has(.compare-board),.compare-discovery{grid-column:1/-1}
+ .compare-board{padding:14px}.compare-pair{max-width:650px;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr)}.compare-card{padding:10px;gap:8px;flex-direction:row}.compare-card img{width:90px;max-height:128px}.compare-card span{font-size:12px;min-height:0}.compare-or{font-size:18px}.compare-progress{margin-top:8px}
 }
 @media(hover:none) and (pointer:coarse){
  .poster:hover{transform:none;box-shadow:none}.candidates .poster::after,.candidates .poster::before{display:none}
