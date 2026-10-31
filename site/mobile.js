@@ -30,4 +30,8 @@ function isRefreshSwipe(start,end){
   if(Date.now()<suppressClickUntil&&event.target.closest('#candidates,.compare-board')){event.preventDefault();event.stopImmediatePropagation()}
  },true);
  portrait.addEventListener('change',()=>refill());
+ const updateHint=()=>{hint.textContent=$('#refresh').disabled?'当前没有待换新的作品':'← 左右滑动封面换一批 →'};
+ if(typeof renderCandidates==='function'){const previous=renderCandidates;renderCandidates=function(){previous();updateHint()}}
+ if(typeof renderBoard==='function'){const previous=renderBoard;renderBoard=function(){previous();updateHint()}}
+ updateHint();
 })();
